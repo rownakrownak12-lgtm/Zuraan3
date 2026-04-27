@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zuraan | Luxury Fragrance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@300;400;600&display=swap');
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .brand-font { font-family: 'Cinzel', serif; }
+        .product-card { transition: 0.4s; border-radius: 2.5rem; overflow: hidden; border: 1px solid #f3f4f6; background: #fff; position: relative; height: 100%; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px -12px rgba(0,0,0,0.1); border-color: #C5A059; }
+        .gold-btn { background: #0A0A0A; color: white; transition: 0.3s; border-radius: 1.2rem; text-align: center; cursor: pointer; }
+        .gold-btn:hover { background: #C5A059; }
+        .details-btn { border: 1px solid #0A0A0A; color: #0A0A0A; transition: 0.3s; border-radius: 1.2rem; text-align: center; cursor: pointer; }
+        .details-btn:hover { background: #f3f4f6; }
+        
+        /* Combo Badge Style */
+        .combo-badge { position: absolute; top: 15px; left: 15px; background: #C5A059; color: white; padding: 5px 15px; border-radius: 50px; font-size: 10px; font-weight: bold; text-transform: uppercase; z-index: 10; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(197, 160, 89, 0.4); }
+        
+        .input-field { width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 14px; outline: none; transition: 0.3s; }
+        .input-field:focus { border-color: #C5A059; ring: 1px solid #C5A059; }
+    </style>
+</head>
+<body class="bg-white">
+    <nav class="fixed w-full z-50 top-0 bg-white/90 backdrop-blur-md border-b">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="./logo.png" class="h-10 w-10 rounded-full border" onerror="this.src='https://via.placeholder.com/40';">
+                <span class="brand-font text-2xl font-bold tracking-tighter uppercase">ZURAAN</span>
+            </div>
+            <div class="flex space-x-5 text-xl text-gray-800">
+                <a href="https://www.facebook.com/share/19vbLoMpfF/" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/zuraan_fragrance" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@zuraan.perfume" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-40 pb-16 text-center bg-[#fdfcfb]">
+        <img src="./logo.png" class="w-24 mx-auto mb-6 rounded-full shadow-2xl border-2 border-white" onerror="this.src='https://via.placeholder.com/100';">
+        <h1 class="brand-font text-6xl md:text-8xl font-bold mb-4 tracking-tighter">ZURAAN</h1>
+        <p class="brand-font text-amber-700 tracking-[0.3em] uppercase italic text-sm text-center px-4">Luxury Performance Fragrance</p>
+    </header>
+
+    <section class="py-20 container mx-auto px-6">
+        <div id="product-list" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-12">
+            <p class="text-center col-span-full py-20 text-gray-400 animate-pulse">Syncing Inventory...</p>
+        </div>
+    </section>
+
+    <div id="orderModal" class="fixed inset-0 z-[100] hidden bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-black text-3xl">&times;</button>
+            <h2 id="modalTitle" class="brand-font text-2xl mb-4 border-b pb-4 tracking-tight">Order Details</h2>
+            
+            <div id="modalContent" class="space-y-4 text-gray-700"></div>
+            
+            <div id="addressFields" class="mt-6 space-y-3 hidden">
+                <p class="text-xs font-bold uppercase text-gray-400 tracking-widest mb-2">Delivery Information</p>
+                <input type="text" id="custName" placeholder="Full Name (আপনার নাম)" class="input-field">
+                <input type="tel" id="custPhone" placeholder="Phone Number (মোবাইল নম্বর)" class="input-field">
+                <input type="text" id="custDistrict" placeholder="District (জেলা)" class="input-field">
+                <textarea id="custAddress" placeholder="Full Address (থানা, গ্রাম/রোড ও এলাকা)" rows="2" class="input-field resize-none"></textarea>
+            </div>
+
+            <div id="modalActions" class="mt-8 space-y-3">
+                <button id="confirmOrderBtn" class="gold-btn w-full py-5 font-bold uppercase tracking-[0.2em] text-xs shadow-xl">Confirm & Order Now</button>
+                <button onclick="closeModal()" class="w-full py-3 text-gray-400 text-xs uppercase tracking-widest hover:text-black transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-zinc-950 text-white py-16 text-center">
+        <h2 class="brand-font text-3xl font-bold tracking-widest mb-8 text-center px-4">ZURAAN</h2>
+        <p class="text-[10px] text-zinc-600 uppercase tracking-widest">© 2026 Zuraan Luxury Fragrances</p>
+    </footer>
+
+    <script>
+        const MY_NUMBER = "8801876395185"; 
+        const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPO-no79a_tO4Kxqg-BxwLtn4Hp8AopALY87ht3IVldUlM2OGGzZg5sMWhoD8E6WAoaHHJKptNmeMz/pub?output=csv";
+        let currentOrderData = null;
+
+        async function fetchProducts() {
+            try {
+                const response = await fetch(`${SHEET_CSV_URL}&cb=${Date.now()}`);
+                const data = await response.text();
+                const rows = data.split(/\r?\n/).slice(1).filter(r => r.trim() !== '');
+                const list = document.getElementById('product-list');
+                list.innerHTML = ''; 
+
+                rows.forEach(row => {
+                    const col = row.split(',').map(c => c.trim().replace(/^"(.*)"$/, '$1'));
+                    if(col.length >= 5) {
+                        let [id, name, price, delivery, imgUrl, details] = col;
+                        let finalImg = imgUrl;
+                        
+                        // Combo check
+                        const isCombo = name.toLowerCase().includes("combo");
+                        const badge = isCombo ? `<div class="combo-badge">Combo Pack</div>` : "";
+
+                        list.innerHTML += `
+                            <div class="product-card">
+                                ${badge}
+                                <div class="h-64 md:h-80 overflow-hidden bg-gray-50">
+                                    <img src="${finalImg}" class="w-full h-full object-cover transition duration-700 hover:scale-110" onerror="this.src='https://via.placeholder.com/400x500';">
+                                </div>
+                                <div class="p-6 md:p-8 text-center flex-grow flex flex-col justify-between">
+                                    <div>
+                                        <h3 class="brand-font text-lg md:text-xl font-bold mb-2 uppercase">${name}</h3>
+                                        <p class="text-amber-700 font-black text-xl md:text-2xl mb-6">${price} TK</p>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <button onclick="showDetails('${name}', '${details.replace(/'/g, "\\'")}')" 
+                                                 class="details-btn py-4 font-bold text-[9px] uppercase tracking-widest">Details</button>
+                                        <button onclick="openOrderModal('${name}', ${price}, ${delivery})" 
+                                                 class="gold-btn py-4 font-bold text-[9px] uppercase tracking-widest shadow-lg">Purchase</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            } catch (e) { console.error("Sync Error:", e); }
+        }
+
+        function showDetails(name, info) {
+            document.getElementById('modalTitle').innerText = name;
+            document.getElementById('modalContent').innerHTML = `
+                <p class="text-gray-600 leading-relaxed italic text-center py-4 border-b border-gray-100">"${info}"</p>
+                <p class="text-[10px] text-center text-gray-400 uppercase tracking-widest mt-4 italic">Zuraan Premium Fragrance</p>
+            `;
+            document.getElementById('addressFields').classList.add('hidden');
+            document.getElementById('confirmOrderBtn').classList.add('hidden');
+            document.getElementById('orderModal').classList.remove('hidden');
+        }
+
+        function openOrderModal(name, price, delivery) {
+            const total = parseInt(price) + parseInt(delivery);
+            currentOrderData = { name, price, delivery, total };
+            
+            document.getElementById('modalTitle').innerText = "Order Summary";
+            document.getElementById('modalContent').innerHTML = `
+                <div class="flex justify-between py-2 border-b border-gray-50">
+                    <span class="text-xs uppercase tracking-widest text-gray-400">Item</span>
+                    <span class="font-bold text-gray-900">${name}</span>
+                </div>
+                <div class="flex justify-between py-2">
+                    <span class="text-xs uppercase tracking-widest text-gray-400">Total Bill</span>
+                    <span class="font-bold text-amber-700">${total} TK</span>
+                </div>
+            `;
+            document.getElementById('addressFields').classList.remove('hidden');
+            document.getElementById('confirmOrderBtn').classList.remove('hidden');
+            document.getElementById('orderModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').classList.add('hidden');
+            // Clear inputs
+            document.getElementById('custName').value = "";
+            document.getElementById('custPhone').value = "";
+            document.getElementById('custDistrict').value = "";
+            document.getElementById('custAddress').value = "";
+        }
+
+        document.getElementById('confirmOrderBtn').onclick = function() {
+            if(!currentOrderData) return;
+            
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const district = document.getElementById('custDistrict').value;
+            const address = document.getElementById('custAddress').value;
+
+            if(!name || !phone || !district || !address) {
+                alert("সবগুলো ঘর পূরণ করুন (Please fill all fields)");
+                return;
+            }
+
+            const msg = encodeURIComponent(
+                `নতুন অর্ডার (ZURAAN WEBSITE)\n` +
+                `--------------------------\n` +
+                `পণ্য: ${currentOrderData.name}\n` +
+                `মোট বিল: ${currentOrderData.total} TK\n\n` +
+                `কাস্টমার ডিটেইলস:\n` +
+                `নাম: ${name}\n` +
+                `ফোন: ${phone}\n` +
+                `জেলা: ${district}\n` +
+                `ঠিকানা: ${address}`
+            );
+            
+            window.open(`https://wa.me/${MY_NUMBER}?text=${msg}`, '_blank');
+            closeModal();
+        };
+
+        fetchProducts();
+    </script>
+</body>
+</html>
